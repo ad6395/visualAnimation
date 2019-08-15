@@ -20,15 +20,15 @@ public class ParticleThread implements Runnable{
     public void run() {
         
         // Get object from InvestmentPSO class
-        ArrayList<Particle> particles = AlgosProject.particles;
-        MainJFrame mj = AlgosProject.mj;
+        ArrayList<Particle> particles = Algorithm.particles;
+        MainJFrame mj = Algorithm.mj;
         
         
                
         // Create dataset                    
         XYSeriesCollection dataset = new XYSeriesCollection();
 
-        XYSeries series1 = new XYSeries("Optimistic values ");
+        XYSeries series1 = new XYSeries("Particles ");
 //        XYSeries series4 = new XYSeries("Optimistic gBest ");
 //        XYSeries series2 = new XYSeries("Most likely values");
 //        XYSeries series5 = new XYSeries("Most likely gBest ");
@@ -37,7 +37,7 @@ public class ParticleThread implements Runnable{
         
         
     
-        for(Map.Entry<Integer, Integer> entry : AlgosProject.particleTreeMap.entrySet()){
+        for(Map.Entry<Integer, Integer> entry : Algorithm.particleTreeMap.entrySet()){
             
               series1.add(entry.getKey(), entry.getValue());
 //            series2.add(p.data(1), 3);
@@ -59,8 +59,8 @@ public class ParticleThread implements Runnable{
                             
         // Create chart
         JFreeChart chart = ChartFactory.createScatterPlot(
-        "Amount to be invested vs Amount that can be expected!s", 
-        "Time", "Type", xydataset);
+        "Amount to be invested vs Amount that can be expected!", 
+        "Returns", "Investment", xydataset);
         
         
 

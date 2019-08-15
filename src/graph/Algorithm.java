@@ -20,7 +20,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Abhishek Dongare
  */
-public class AlgosProject {
+public class Algorithm {
 
     	private static int Target;
 	private static int noOfInputs;
@@ -39,7 +39,7 @@ public class AlgosProject {
     public static  int epoch = 0;
     public static int gBest = 0;
     
-	public AlgosProject(int target, int noOfInputs, int noOfParticles, int upperLimit, int lowerLimit, int noOfIterations,
+	public Algorithm(int target, int noOfInputs, int noOfParticles, int upperLimit, int lowerLimit, int noOfIterations,
 			int goldP, int diamondP, int mutualfundsP, int gPeriod, int dPeriod, int mPeriod, int bPeriod) {
 		this.Target = target;
 		this.noOfInputs = noOfInputs;
@@ -347,36 +347,36 @@ public class AlgosProject {
         int A=0;
         int B=0;
         Scanner sc = new Scanner(System.in);
-		//System.out.println("\t\t\t\t\t\t! PARTICLE SWARM OPTIMISATION !");
-		//System.out.println("Enter the number of particles:");
-		int noOfParticles = 10;
-		//System.out.println("Enter the number of iterations:");
-		int noOfIterations = 5;
-		//System.out.println("Enter the lowerlimit of amount to be invested in $:");
-		int lowerlimit = 1000;
-		//System.out.println("Enter the upperlimit of amount to be invested in $::");
-		int upperlimit = 2000;
-		//System.out.println("Enter the target in $:");
-		int target = 6112;
-		//System.out.println("Enter the number of inputs:");
+		System.out.println("\t\t\t\t\t\t! PARTICLE SWARM OPTIMISATION !");
+		System.out.println("Enter the number of particles:");
+		int noOfParticles = sc.nextInt();
+		System.out.println("Enter the number of iterations:");
+		int noOfIterations = sc.nextInt();
+		System.out.println("Enter the lowerlimit of amount to be invested in $:");
+		int lowerlimit = sc.nextInt();
+		System.out.println("Enter the upperlimit of amount to be invested in $::");
+		int upperlimit = sc.nextInt();
+		System.out.println("Enter the target in $:");
+		int target = sc.nextInt();
+		System.out.println("Enter the number of inputs:");
 
-		int noOfInputs = 3;
-		//System.out.println("Enter the percentage of amount to be invested in Gold:");
-		int goldP = 10;
-		//System.out.println("Enter the percentage of amount to be invested in  Diamond:");
-		int diamondP = 10;
-		//System.out.println("Enter the percentage of amount to be invested in  Mutual Funds:");
-		int mutualfundsP = 10;
-		//System.out.println("Enter the duration of time in MONTHS for which you want to invest in Gold:");
-		int gPeriod = 5;
+		int noOfInputs = sc.nextInt();
+		System.out.println("Enter the percentage of amount to be invested in Gold:");
+		int goldP = sc.nextInt();
+		System.out.println("Enter the percentage of amount to be invested in  Diamond:");
+		int diamondP = sc.nextInt();
+		System.out.println("Enter the percentage of amount to be invested in  Mutual Funds:");
+		int mutualfundsP = sc.nextInt();
+		System.out.println("Enter the duration of time in MONTHS for which you want to invest in Gold:");
+		int gPeriod = sc.nextInt();
 
-		//System.out.println("Enter the duration of time in MONTHS for which you want to invest in Diamond:");
-		int dPeriod = 5;
-		//System.out.println("Enter the duration of time in MONTHS for which you want to invest in Mutual Funds:");
-		int mPeriod = 5;
-		//System.out.println("Enter the duration of time in MONTHS for which you want to invest in Bank:");
-		int bPeriod = 5;
-              AlgosProject AG = new AlgosProject(target, noOfInputs, noOfParticles, upperlimit, lowerlimit, noOfIterations, goldP, diamondP,
+		System.out.println("Enter the duration of time in MONTHS for which you want to invest in Diamond:");
+		int dPeriod = sc.nextInt();
+		System.out.println("Enter the duration of time in MONTHS for which you want to invest in Mutual Funds:");
+		int mPeriod = sc.nextInt();
+		System.out.println("Enter the duration of time in MONTHS for which you want to invest in Bank:");
+		int bPeriod = sc.nextInt();
+              Algorithm AG = new Algorithm(target, noOfInputs, noOfParticles, upperlimit, lowerlimit, noOfIterations, goldP, diamondP,
 				mutualfundsP, gPeriod, dPeriod, mPeriod, bPeriod);
              AG.PSOAlgorithm();
       try {
@@ -442,9 +442,9 @@ public class AlgosProject {
                     
             );        
         } catch (InterruptedException ex) {
-            Logger.getLogger(AlgosProject.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Algorithm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvocationTargetException ex) {
-            Logger.getLogger(AlgosProject.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Algorithm.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         long start = System.currentTimeMillis();
