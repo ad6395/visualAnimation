@@ -59,7 +59,7 @@ public class ParticleThread implements Runnable{
                             
         // Create chart
         JFreeChart chart = ChartFactory.createScatterPlot(
-        "Optimistic, most likely and pessimistic time values", 
+        "Amount to be invested vs Amount that can be expected!s", 
         "Time", "Type", xydataset);
         
         

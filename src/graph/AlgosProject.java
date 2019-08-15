@@ -7,6 +7,8 @@ package graph;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -248,27 +250,47 @@ public class AlgosProject {
 
     private static void printSolution() {
         // Find solution particle.
-        int i=0;
-        Particle particle = null;
-        for (i = 0; i < particles.size(); i++) {
-            particle = particles.get(i);
-            if (sum( i,  goldP,  diamondP,  mutualfundsP,  gPeriod,  dPeriod,  mPeriod,
-			 bPeriod) == Target) {
-                break;
-            }
-        }
-            // Print it.
-            System.out.println("Particle " + i + " has achieved Target.");
- System.out.println("PERT " + particle.mpBest);
-            
-               
-                    System.out.print("Optimistic time: " +particle.data(0)+ " ");
-               System.out.print("Most likely time: "+particle.data(1) + " ");
-                    System.out.println("Pessimistic time: " +particle.data(2) + " ");
-                
-             // j
-            System.out.print("\n");
-            return;
+       int sum1 = 0;
+		// Find solution particle.
+		int i = 0;
+		for (; i < particles.size(); i++) {
+			// System.out.println("I" + i);
+			// System.out.println("TEST:" + particles.get(i).getData(0));
+			if (sum(i, goldP, diamondP, mutualfundsP, gPeriod, dPeriod, mPeriod, bPeriod) == Target) {
+				break;
+			}
+		}
+		// Print it.
+		// System.out.println("size:" + particles.size());
+		System.out.println("\nParticle Number:" + i);
+		for (int j = 0; j < noOfInputs; j++) {
+			try {
+				sum1 += particles.get(i).data(j);
+			} catch (Exception e) {
+
+			}
+			if (j < noOfInputs - 1) {
+				// System.out.println("J" + j);
+				try {
+					// Block of code to try
+
+					System.out.print(particles.get(i).data(j) + " + ");
+				} catch (Exception e) {
+
+				}
+			} else {
+				System.out.print(particles.get(i).data(j) + " = " + sum1);
+			}
+
+		} // j
+		System.out.println("\nThe Target is:" + Target);
+		System.out.println("\nOptimal Solution which is closest to the target after investing in GOLD: " + goldP
+				+ "% for a period of " + gPeriod + " months, in DIAMOND:" + diamondP + "% for a period of " + dPeriod
+				+ " months, in MUTUALFUNDS:" + mutualfundsP + "% for a period of " + mutualfundsP + " months, is $:"
+				+ sum1);
+		System.out.println("\nParticle " + i + " has achieved Target.");
+		System.out.print("\n");
+		return;
         
     }
 
@@ -322,19 +344,20 @@ public class AlgosProject {
 
     public static void main(String[] args) {
         
-        
+        int A=0;
+        int B=0;
         Scanner sc = new Scanner(System.in);
 		//System.out.println("\t\t\t\t\t\t! PARTICLE SWARM OPTIMISATION !");
 		//System.out.println("Enter the number of particles:");
-		int noOfParticles = 100;
+		int noOfParticles = 10;
 		//System.out.println("Enter the number of iterations:");
-		int noOfIterations = 200;
+		int noOfIterations = 5;
 		//System.out.println("Enter the lowerlimit of amount to be invested in $:");
 		int lowerlimit = 1000;
 		//System.out.println("Enter the upperlimit of amount to be invested in $::");
 		int upperlimit = 2000;
 		//System.out.println("Enter the target in $:");
-		int target = 2302;
+		int target = 6112;
 		//System.out.println("Enter the number of inputs:");
 
 		int noOfInputs = 3;
@@ -356,8 +379,58 @@ public class AlgosProject {
               AlgosProject AG = new AlgosProject(target, noOfInputs, noOfParticles, upperlimit, lowerlimit, noOfIterations, goldP, diamondP,
 				mutualfundsP, gPeriod, dPeriod, mPeriod, bPeriod);
              AG.PSOAlgorithm();
-        AG.printSolution();
-        return;
+      try {
+			AG.printSolution();
+		} catch (Exception e) {
+
+			// logic to get the next closest value
+			int[] store = new int[particles2.size()];
+
+			for (int i = 0; i < particles2.size(); i++) {
+				store[i] = particles2.get(i);
+			}
+			Arrays.sort(store);
+			System.out.println("Store 1:" + Arrays.toString(store));
+			int x = target + ((target*5)/100);
+			int y = target - ((target*5)/100);
+			for (int i = 0; i < store.length; i++) {
+
+				if (y < store[i] && store[i] < x) {
+					particles3.add(store[i]);
+				}
+			}
+			System.out.println("LIST 3" + particles3);
+			int[] store2 = new int[particles3.size()];
+			for (int i = 0; i < particles3.size(); i++) {
+				store2[i] = particles3.get(i);
+			}
+			Arrays.sort(store2);
+			for (int i = 0; i < store2.length; i++) {
+				int l = store2.length - 1;
+				A = store2[l];
+			}
+			for (Map.Entry<Integer, Integer> entry : particleTreeMap.entrySet()) {
+				int key = entry.getKey();
+				int value = entry.getValue();
+				if (A == key) {
+					B = value;
+				}
+				// System.out.println(key + " => " + value);
+			}
+			// System.out.println("Store 2" + Arrays.toString(store2));
+			System.out.println("\nSolution cannot be found!Please enter different value!");
+			System.out.println("\nInstead of " + target + " you can set target as:" + A + " and invest $:" + B);
+			// System.out.println("HashMap:" + particleMap);
+
+		}
+		// System.out.println("HashMap:" + particleMap);
+//		for (Map.Entry<Integer, Integer> entry : particleTreeMap.entrySet()) {
+//			int key = entry.getKey();
+//			int value = entry.getValue();
+//
+//			System.out.println(key + " => " + value);
+//		}
+
     }
     
    public static void displayParticlesJFreeChart() {
