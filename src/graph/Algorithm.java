@@ -85,37 +85,40 @@ public class Algorithm {
 		return;
     }
 
-    private static void PSOAlgorithm() {
-        
-        int gBestTest = 0;
-        Particle aParticle = null;
-        int dataSum=0;
-        boolean done = false;
+    private static void PSOAlgorithm() {// main algorithm
+		int gBest = 0;
+		int gBestTest = 0;
+		Particle par = null;
+		int Iteration = 0;
+		boolean done = false;
+		int dataSum = 0;
+		long x = System.nanoTime();
+		initialize();
 
-        initialize();
+		while (!done) {
+			// Two conditions can end this loop:
+			// if the maximum number of Iterations allowed has been reached, or,
+			// if the Target value has been found.
 
-        while (!done) {
-            // Two conditions can end this loop:
-            //    if the maximum number of epochs allowed has been reached, or,
-            //    if the Target value has been found.
-            if (epoch < noOfIterations) {
+			if (Iteration < noOfIterations) {
+//this loop is used just to represent the data in the console in a format
 
-               for (int i = 0; i < noOfParticles; i++) {
+				for (int i = 0; i < noOfParticles; i++) {
 					System.out.println("Addition of these values  ");
-					aParticle = particles.get(i);// its is used to get the properties of each particle
+					par = particles.get(i);// its is used to get the properties of each particle
 					for (int j = 0; j < noOfInputs; j++) {
 
 						if (j < noOfInputs - 1) {
-							dataSum += aParticle.data(j);
+							dataSum += par.data(j);
 
-							System.out.print(aParticle.data(j) + " + ");
+							System.out.print(par.data(j) + " + ");
 						} else {
-							dataSum += aParticle.data(j);// storing sum of 3 inputs
-//							particleMap.put(sum(i, goldP, diamondP, mutualfundsP, gPeriod, dPeriod, mPeriod, bPeriod),
-//									dataSum);
+							dataSum += par.data(j);// storing sum of 3 inputs
+							//particleMap.put(sum(i, goldP, diamondP, mutualfundsP, gPeriod, dPeriod, mPeriod, bPeriod),
+									//dataSum);
 							particleTreeMap.put(
 									sum(i, goldP, diamondP, mutualfundsP, gPeriod, dPeriod, mPeriod, bPeriod), dataSum);
-							System.out.print(aParticle.data(j) + " = " + dataSum
+							System.out.print(par.data(j) + " = " + dataSum
 									+ " after making the investment as mentioned, will give amount $: ");
 							dataSum = 0;
 
@@ -128,29 +131,50 @@ public class Algorithm {
 					}
 				} // i
 
-                gBestTest = Best();
-                aParticle = particles.get(gBest);
-                // if(any particle's pBest value is better than the gBest value, make it the new gBest value.
-                if (Math.abs(Target - sum( gBestTest,  goldP,  diamondP,  mutualfundsP,  gPeriod,  dPeriod,  mPeriod,
-			 bPeriod)) < Math.abs(Target - sum( gBest,  goldP,  diamondP,  mutualfundsP,  gPeriod,  dPeriod,  mPeriod,
-			 bPeriod))) {
-                    gBest = gBestTest;
-                }
-                displayParticlesJFreeChart();
-                getVelocity(gBest);
+				gBestTest = Best();// we store the result of Best function in this variable. It is basically the
+									// index of the particle.
+				par = particles.get(gBest);// at the beginning it is 0.
+				// if(any particle's pBest value is better than the gBest value, make it the new
+				// gBest value.
+				if (Math.abs(Target
+						- sum(gBestTest, goldP, diamondP, mutualfundsP, gPeriod, dPeriod, mPeriod, bPeriod)) < Math
+								.abs(Target - sum(gBest, goldP, diamondP, mutualfundsP, gPeriod, dPeriod, mPeriod,
+										bPeriod))) {// we compare the target-sum of
+					// the gBestTestth index
+					// particle and gBesth index
+					// particle which is 0 for the
+					// first iteration.Incase the If
+					// condition is satisfied we
+					// replace gBest with gBestTest
+					// and this process continues
+					// until particle at every
+					// indexes are compared. At the
+					// end we get the best gBest
+					// which is the index of the
+					// best particle.
+					gBest = gBestTest;
+				}
+ displayParticlesJFreeChart();
+				getVelocity(gBest);// to get the velocity of gBestth index particle
 
-                updateparticles(gBest);
+				updateparticles(gBest);// to update the gBestth index particle
 
-                System.out.println("epoch number: " + epoch);
+				System.out.println("Iteration number: " + Iteration);
 
-                epoch += 1;
+				Iteration += 1;
 
-            } else {
-                done = true;
-            }
-        }
-        return;
-    }
+			} else {
+				done = true;
+			}
+
+			long y = System.nanoTime();
+			long z = y - x;
+			System.out.println("Time Taken in Nano Seconds:" + z);
+
+		}
+		return;
+
+	}
 
     private static void getVelocity(int gBestindex) {
         //  from Kennedy & Eberhart(1995).
@@ -205,47 +229,59 @@ public class Algorithm {
 
     private static int sum(int index, int goldP, int diamondP, int mutualfundsP, int gPeriod, int dPeriod, int mPeriod,
 			int bPeriod) {
-        int total = 0;
-        int diamond = 0;
+      int diamond = 0;
 		int diamond1 = 0;
 		int gold = 0;
 		int gold1 = 0;
+		int gold2 = 0;
 		int mutualFunds = 0;
 		int mutualFunds1 = 0;
 		int sum = 0;
 		int sum1 = 0;
 		int total1 = 0;
 		int tax = 0;
-		
+		int total = 0;
 		int bankInterest = 0;
 		int rem = 0;
 		double interest = 0;
-        Particle aParticle = null;
+		Particle par = null;// create a new instance of particle and set to null
+		Random randomGenerator = new Random();
+		par = particles.get(index);// null is now replaced with the particle object and its properties.
 
-        aParticle = particles.get(index);
+		for (int i = 0; i < noOfInputs; i++) {
+			sum += par.data(i);// get the random numbers allocated to every index of the data array of the
+		} // particle and add it to total. Do it continously until all numbers are added.
 
-        for (int i = 0; i < noOfInputs; i++) {
-			sum += aParticle.data(i);// get the random numbers allocated to every index of the data array of the
-		}
+		// get the random numbers allocated to every index of the data array of the
 		// particle and add it to total. Do it continously until all numbers are added.
 		// Calculation for the target
 		gold = (sum * goldP) / 100;// gold investment
-		gold1 = gold + (((gold * 20) / 100) * gPeriod);// gold investment
-		diamond = (sum * diamondP) / 100;// diamond investment
-		diamond1 = diamond + (((diamond * 30) / 100) * dPeriod);// diamond investment
-		mutualFunds = (sum * mutualfundsP) / 100;
-		mutualFunds1 = mutualFunds + (((mutualFunds * 14) / 100) * mPeriod);
-		// sum = sum + ((sum * 11) / 100);
+		for (int i = 0; i < gPeriod; i++) {
+			int randomInt = randomGenerator.nextInt(50) + 1;
+			// System.out.println("GOLD ROI for month " + i + " is " + randomInt);
+			gold1 = gold + (((gold * 10) / 100));
+			gold += gold1;
+		}
+		diamond = (sum * diamondP) / 100;// gold investment
+		for (int i = 0; i < dPeriod; i++) {
+			int randomInt = randomGenerator.nextInt(50) + 1;
+			// System.out.println("Diamond ROI for month " + i + " is " + randomInt);
+			diamond1 = diamond + (((diamond * 10) / 100));
+			diamond += diamond1;
+		}
+		mutualFunds = (sum * mutualfundsP) / 100;// gold investment
+		for (int i = 0; i < dPeriod; i++) {
+			int randomInt = randomGenerator.nextInt(50) + 1;
+			// System.out.println("MF ROI for month " + i + " is " + randomInt);
+			mutualFunds1 = mutualFunds + (((mutualFunds * 10) / 100));
+			mutualFunds += mutualFunds1;
+		}
 
-		// total = (sum + gold + diamond);
-
-		// total = sum - ((sum * 20) / 100);
-		rem = sum - (gold1 + diamond1 + mutualFunds1);
-		bankInterest = (((rem * 11) / 100) * bPeriod);
-		total1 = sum + gold1 + diamond1 + mutualFunds1 + bankInterest;
+		total1 = sum + gold + diamond + mutualFunds;
 		tax = (total1 * 20) / 100;
 		total = total1 - tax;
-        return total;
+
+		return total;
     }
 
     private static void printSolution() {
@@ -415,7 +451,7 @@ public class Algorithm {
 				if (A == key) {
 					B = value;
 				}
-				// System.out.println(key + " => " + value);
+				 System.out.println(key + " => " + value);
 			}
 			// System.out.println("Store 2" + Arrays.toString(store2));
 			System.out.println("\nSolution cannot be found!Please enter different value!");
